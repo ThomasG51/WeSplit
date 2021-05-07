@@ -11,7 +11,7 @@ struct ContentView: View {
     @State private var checkAmount = ""
     @State private var numberOfPeopleSelected = 0
     @State private var tipPercentageSelected = 2
-    
+ 
     let tipPercentages = [10, 15, 20, 25, 0]
 
     var totalPerPerson: Double {
@@ -21,6 +21,13 @@ struct ContentView: View {
         let totalWithTip = orderAmount + (orderAmount * tip / 100)
         
         return totalWithTip / people
+    }
+    
+    var totalWithTip: Double {
+        let orderAmount: Double = Double(checkAmount) ?? 0
+        let tip: Double = Double(tipPercentages[tipPercentageSelected])
+        
+        return orderAmount + (orderAmount * tip / 100)
     }
     
     var body: some View {
@@ -46,7 +53,11 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 
-                Section {
+                Section(header: Text("Total Amount")) {
+                    Text("$\(totalWithTip, specifier: "%.2f")")
+                }
+                
+                Section(header: Text("Amount per person")) {
                     // Specifier affiche 2 chiffre aprés la virgule
                     Text("$ \(totalPerPerson, specifier: "%.2f")")
                 }
